@@ -1,0 +1,28 @@
+type Item {
+  id: ID!
+  name: String!
+  quantityTotal: Int!
+  quantityAvailable: Int!
+}
+
+input CreateItemInput {
+  name: String!
+  quantityTotal: Int!
+}
+
+input UpdateItemInput {
+  id: ID!
+  name: String
+  quantityTotal: Int
+}
+
+type Query {
+  items: [Item]!
+  item(id: Int!): Item
+}
+
+type Mutation {
+  createItem(createItemInput: CreateItemInput!): Item!
+  updateItem(updateItemInput: UpdateItemInput!): Item!
+  removeItem(id: ID!): Boolean!
+}

@@ -1,0 +1,47 @@
+type Organisation {
+  id: ID!
+  name: String!
+  passwordHash: String!
+  createdAt: String!
+}
+
+type OrganisationPublic {
+  id: ID!
+  name: String!
+  createdAt: String!
+}
+
+input CreateOrganisationInput {
+  name: String!
+  passwordHash: String!
+}
+
+input LoginOrganisationInput {
+  name: String!
+  passwordHash: String!
+}
+
+input UpdateOrganisationInput {
+  id: ID!
+  name: String
+  passwordHash: String
+}
+
+type Query {
+  organisation(id: ID!): OrganisationPublic
+  checkOrganisationLogin: OrganisationPublic!
+}
+
+type Mutation {
+  createOrganisation(
+    createOrganisationInput: CreateOrganisationInput!
+  ): OrganisationPublic!
+  updateOrganisation(
+    updateOrganisationInput: UpdateOrganisationInput!
+  ): OrganisationPublic!
+  loginOrganisation(
+    loginOrganisationInput: LoginOrganisationInput!
+  ): OrganisationPublic!
+  removeOrganisation(id: ID!): OrganisationPublic
+  logout: Boolean!
+}

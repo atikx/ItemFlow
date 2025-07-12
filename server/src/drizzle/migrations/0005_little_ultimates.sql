@@ -1,0 +1,1 @@
+ALTER TABLE "events" ADD COLUMN "year" integer NOT NULL;

@@ -1,0 +1,20 @@
+type Event {
+  id: ID!
+  name: String!
+  year: Int!
+}
+
+input CreateEventInput {
+  name: String!
+  year: Int!
+}
+
+type Query {
+  events: [Event]!
+  event(id: ID!): Event
+}
+
+type Mutation {
+  createEvent(createEventInput: CreateEventInput!): Event!
+  removeEvent(id: ID!): Boolean!
+}

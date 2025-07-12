@@ -1,0 +1,41 @@
+
+
+type ItemLog {
+  id: ID!
+  itemId: ID!
+  eventId: ID!
+  issuedBy: ID!
+  quantityIssued: Int!
+  expectedReturnDate: String!
+  returnedAt: String
+  organisationId: ID!
+  departmentId: ID!
+}
+
+input CreateItemLogInput {
+  itemId: ID!
+  eventId: ID!
+  issuedBy: ID!
+  quantityIssued: Int!
+  expectedReturnDate: String!
+  departmentId: ID!
+}
+
+input UpdateItemLogInput {
+  id: ID!
+  itemId: ID
+  quantityIssued: Int
+  expectedReturnDate: String
+  departmentId: ID
+}
+
+type Query {
+  itemLogs(eventId: ID!): [ItemLog]!
+  itemLog(id: ID!): ItemLog
+}
+
+type Mutation {
+  createItemLog(createItemLogInput: CreateItemLogInput!): ItemLog!
+  updateItemLog(updateItemLogInput: UpdateItemLogInput!): ItemLog!
+  returnItemLog(id: ID!): Boolean!
+}

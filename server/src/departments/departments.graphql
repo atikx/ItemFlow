@@ -1,0 +1,22 @@
+type Department {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+input CreateDepartmentInput {
+  name: String!
+  email: String!
+}
+
+
+
+type Query {
+  departments: [Department]!
+  department(id: ID!): Department
+}
+
+type Mutation {
+  createDepartment(createDepartmentInput: CreateDepartmentInput!): Department!
+  removeDepartment(id: ID!): Boolean!
+}

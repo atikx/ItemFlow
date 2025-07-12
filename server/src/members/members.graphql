@@ -1,0 +1,30 @@
+type Member {
+  id: ID!
+  name: String!
+  batch: Int!
+  organisationId: ID!
+}
+
+input CreateMemberInput {
+  name: String!
+  batch: Int!
+}
+
+input UpdateMemberInput {
+  id: ID!
+  name: String
+  batch: Int
+}
+
+
+
+type Query {
+  members: [Member]!
+  member(id: Int!): Member
+}
+
+type Mutation {
+  createMember(createMemberInput: CreateMemberInput!): Member!
+  updateMember(updateMemberInput: UpdateMemberInput!): Member!
+  removeMember(id: String!): Boolean!
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "itemLogs" ADD COLUMN "expectedReturnDate" timestamp with time zone NOT NULL;

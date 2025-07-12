@@ -1,0 +1,1 @@
+ALTER TABLE "itemLogs" DROP COLUMN "expectedReturnDate";
