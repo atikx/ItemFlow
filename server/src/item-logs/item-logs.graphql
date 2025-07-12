@@ -23,7 +23,6 @@ input CreateItemLogInput {
 
 input UpdateItemLogInput {
   id: ID!
-  itemId: ID
   quantityIssued: Int
   expectedReturnDate: String
   departmentId: ID

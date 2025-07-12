@@ -9,37 +9,32 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Plus, Loader2 } from "lucide-react";
-import { Item, Member, Department, ItemLogFormData } from "@/types/itemLogs.types";
+import { Loader2 } from "lucide-react";
+import { FormData } from "@/types/inventory.types";
+import { Item, Member, Department } from "@/types/itemLogs.types";
+import { SearchableSelect } from "./SearchableSelect";
 
 interface IssueItemDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   items: Item[];
   members: Member[];
   departments: Department[];
-  onIssueItem: (formData: ItemLogFormData) => Promise<boolean>;
   isLoading: boolean;
-  trigger?: React.ReactNode;
+  onSubmit: (formData: FormData) => Promise<boolean>;
 }
 
 export const IssueItemDialog = ({
+  open,
+  onOpenChange,
   items,
   members,
   departments,
-  onIssueItem,
   isLoading,
-  trigger,
+  onSubmit,
 }: IssueItemDialogProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState<ItemLogFormData>({
+  const [formData, setFormData] = useState<FormData>({
     itemId: "",
     issuedBy: "",
     departmentId: "",
@@ -58,34 +53,24 @@ export const IssueItemDialog = ({
   };
 
   const handleSubmit = async () => {
-    const success = await onIssueItem(formData);
+    const success = await onSubmit(formData);
     if (success) {
       resetForm();
-      setIsOpen(false);
+      onOpenChange(false);
     }
   };
 
-  const handleDialogClose = (open: boolean) => {
-    if (!open && !isLoading) {
-      setIsOpen(false);
+  const handleDialogClose = (newOpen: boolean) => {
+    if (!newOpen && !isLoading) {
+      onOpenChange(false);
       resetForm();
-    } else if (open) {
-      setIsOpen(true);
+    } else if (newOpen) {
+      onOpenChange(true);
     }
   };
-
-  const defaultTrigger = (
-    <Button onClick={resetForm} className="gap-2">
-      <Plus className="h-4 w-4" />
-      Issue Item
-    </Button>
-  );
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleDialogClose}>
-      <DialogTrigger asChild>
-        {trigger || defaultTrigger}
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleDialogClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Issue New Item</DialogTitle>
@@ -93,64 +78,49 @@ export const IssueItemDialog = ({
             Create a new item log by issuing an item to a member.
           </DialogDescription>
         </DialogHeader>
+        
         <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="item">Item *</Label>
-            <Select
-              value={formData.itemId}
-              onValueChange={(value) => setFormData({ ...formData, itemId: value })}
-              disabled={isLoading}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select an item" />
-              </SelectTrigger>
-              <SelectContent>
-                {items.map((item) => (
-                  <SelectItem key={item.id} value={item.id}>
-                    {item.name} (Available: {item.quantityAvailable})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="member">Issued To *</Label>
-            <Select
-              value={formData.issuedBy}
-              onValueChange={(value) => setFormData({ ...formData, issuedBy: value })}
-              disabled={isLoading}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a member" />
-              </SelectTrigger>
-              <SelectContent>
-                {members.map((member) => (
-                  <SelectItem key={member.id} value={member.id}>
-                    {member.name} (Batch {member.batch})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="department">Department *</Label>
-            <Select
-              value={formData.departmentId}
-              onValueChange={(value) => setFormData({ ...formData, departmentId: value })}
-              disabled={isLoading}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a department" />
-              </SelectTrigger>
-              <SelectContent>
-                {departments.map((dept) => (
-                  <SelectItem key={dept.id} value={dept.id}>
-                    {dept.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <SearchableSelect
+            label="Item *"
+            placeholder="Select an item..."
+            searchPlaceholder="Search items..."
+            value={formData.itemId}
+            onValueChange={(value) => setFormData({ ...formData, itemId: value })}
+            options={items.map(item => ({
+              value: item.id,
+              label: `${item.name} (Available: ${item.quantityAvailable})`
+            }))}
+            disabled={isLoading}
+          />
+
+          <SearchableSelect
+            label="Issued By *"
+            placeholder="Select a member..."
+            searchPlaceholder="Search members..."
+            value={formData.issuedBy}
+            onValueChange={(value) => setFormData({ ...formData, issuedBy: value })}
+            options={[...members]
+              .sort((a, b) => b.batch - a.batch)
+              .map(member => ({
+                value: member.id,
+                label: `${member.name} (Batch ${member.batch})`
+              }))}
+            disabled={isLoading}
+          />
+
+          <SearchableSelect
+            label="Department *"
+            placeholder="Select a department..."
+            searchPlaceholder="Search departments..."
+            value={formData.departmentId}
+            onValueChange={(value) => setFormData({ ...formData, departmentId: value })}
+            options={departments.map(dept => ({
+              value: dept.id,
+              label: dept.name
+            }))}
+            disabled={isLoading}
+          />
+
           <div className="grid gap-2">
             <Label htmlFor="quantity">Quantity *</Label>
             <Input
@@ -163,6 +133,7 @@ export const IssueItemDialog = ({
               disabled={isLoading}
             />
           </div>
+
           <div className="grid gap-2">
             <Label htmlFor="returnDate">Expected Return Date</Label>
             <Input
@@ -174,6 +145,7 @@ export const IssueItemDialog = ({
             />
           </div>
         </div>
+
         <DialogFooter>
           <Button
             variant="outline"
