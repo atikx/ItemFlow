@@ -78,17 +78,19 @@ export const IssueItemDialog = ({
             Create a new item log by issuing an item to a member.
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="grid gap-4 py-4">
           <SearchableSelect
             label="Item *"
             placeholder="Select an item..."
             searchPlaceholder="Search items..."
             value={formData.itemId}
-            onValueChange={(value) => setFormData({ ...formData, itemId: value })}
-            options={items.map(item => ({
+            onValueChange={(value) =>
+              setFormData({ ...formData, itemId: value })
+            }
+            options={items.map((item) => ({
               value: item.id,
-              label: `${item.name} (Available: ${item.quantityAvailable})`
+              label: `${item.name} (Available: ${item.quantityAvailable})`,
             }))}
             disabled={isLoading}
           />
@@ -98,12 +100,14 @@ export const IssueItemDialog = ({
             placeholder="Select a member..."
             searchPlaceholder="Search members..."
             value={formData.issuedBy}
-            onValueChange={(value) => setFormData({ ...formData, issuedBy: value })}
+            onValueChange={(value) =>
+              setFormData({ ...formData, issuedBy: value })
+            }
             options={[...members]
               .sort((a, b) => b.batch - a.batch)
-              .map(member => ({
+              .map((member) => ({
                 value: member.id,
-                label: `${member.name} (Batch ${member.batch})`
+                label: `${member.name} (Batch ${member.batch})`,
               }))}
             disabled={isLoading}
           />
@@ -113,10 +117,12 @@ export const IssueItemDialog = ({
             placeholder="Select a department..."
             searchPlaceholder="Search departments..."
             value={formData.departmentId}
-            onValueChange={(value) => setFormData({ ...formData, departmentId: value })}
-            options={departments.map(dept => ({
+            onValueChange={(value) =>
+              setFormData({ ...formData, departmentId: value })
+            }
+            options={departments.map((dept) => ({
               value: dept.id,
-              label: dept.name
+              label: dept.name,
             }))}
             disabled={isLoading}
           />
@@ -127,7 +133,9 @@ export const IssueItemDialog = ({
               id="quantity"
               type="number"
               value={formData.quantityIssued}
-              onChange={(e) => setFormData({ ...formData, quantityIssued: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, quantityIssued: e.target.value })
+              }
               placeholder="Enter quantity"
               min="1"
               disabled={isLoading}
@@ -140,7 +148,9 @@ export const IssueItemDialog = ({
               id="returnDate"
               type="date"
               value={formData.expectedReturnDate}
-              onChange={(e) => setFormData({ ...formData, expectedReturnDate: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, expectedReturnDate: e.target.value })
+              }
               disabled={isLoading}
             />
           </div>

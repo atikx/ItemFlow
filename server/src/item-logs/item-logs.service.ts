@@ -13,6 +13,25 @@ export class ItemLogsService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
   async create(org_id: string, createItemLogInput: CreateItemLogInput) {
+    // check if the issued quantity is smaller than the available quantity
+    const [item] = await this.db
+      .select({
+        quantityAvailable: items.quantityAvailable,
+      })
+      .from(items)
+      .where(
+        and(
+          eq(items.id, createItemLogInput.itemId),
+          eq(items.organisationId, org_id),
+        ),
+      );
+
+    if (item.quantityAvailable < createItemLogInput.quantityIssued) {
+      throwGraphQLError(
+        'Insufficient item quantity available',
+        'ITEM_QUANTITY_INSUFFICIENT',
+      );
+    }
     // decrease the quantity of the item
     const [decreasedItem] = await this.db
       .update(items)
@@ -126,19 +145,12 @@ export class ItemLogsService {
         .update(itemLogs)
         .set({
           returnedAt: new Date(),
-        }).where(
-          and(
-            eq(itemLogs.id, id),
-            eq(itemLogs.organisationId, org_id),
-          )
-        )
+        })
+        .where(and(eq(itemLogs.id, id), eq(itemLogs.organisationId, org_id)))
         .returning();
 
       if (!returnedItemLog) {
-        throwGraphQLError(
-          'Failed to return item',
-          'ITEM_LOG_DELETION_FAILED',
-        );
+        throwGraphQLError('Failed to return item', 'ITEM_LOG_DELETION_FAILED');
       }
 
       return true;
