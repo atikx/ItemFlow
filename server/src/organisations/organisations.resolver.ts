@@ -34,6 +34,7 @@ export class OrganisationsResolver {
   ) {
     const newOrg = await this.service.create(input);
     const isProduction = process.env.NODE_ENV === 'production';
+    console.log(isProduction);
     context.res.cookie('org_id', generateToken(newOrg.id), {
       httpOnly: true,
       secure: isProduction,
