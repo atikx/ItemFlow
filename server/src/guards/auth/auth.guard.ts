@@ -19,6 +19,9 @@ export class AuthGuard implements CanActivate {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+
+    console.log('AuthGuard: Checking authentication...');
+
     const ctx = GqlExecutionContext.create(context);
     const req = ctx.getContext().req;
     const token = req.cookies['org_id'];
