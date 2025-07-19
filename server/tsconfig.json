@@ -3,6 +3,8 @@
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
+    "rootDir": "./src",
+    "include": ["src/**/*"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
