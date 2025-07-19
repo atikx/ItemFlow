@@ -4,7 +4,6 @@
     "declaration": true,
     "removeComments": true,
     "rootDir": "./src",
-    "include": ["src/**/*"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
@@ -19,5 +18,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist",
+    "**/*spec.ts",
+    "src/drizzle.config.ts" 
+  ]
 }
