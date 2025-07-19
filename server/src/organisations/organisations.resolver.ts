@@ -65,11 +65,12 @@ export class OrganisationsResolver {
     @Context() context: { res: Response },
   ) {
     const org = await this.service.login(input);
+    const isProduction = process.env.NODE_ENV === 'production';
 
     context.res.cookie('org_id', generateToken(org.id), {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     });
 

@@ -3,6 +3,7 @@ import { NextResponse, NextRequest } from 'next/server';
 // Middleware function
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('org_id')?.value;
+  console.log('Middleware: Token:', token);
   const url = request.nextUrl;
   const path = url.pathname;
 
