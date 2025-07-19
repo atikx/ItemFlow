@@ -24,9 +24,11 @@ export class AuthGuard implements CanActivate {
 
     const ctx = GqlExecutionContext.create(context);
     const req = ctx.getContext().req;
+    console.log('AuthGuard: Request context:', req.cookies || 'No cookies found');
     const token = req.cookies['org_id'];
 
     if (!token) {
+      console.log('AuthGuard: No token found in cookies');
       throw new UnauthorizedException('No authentication token provided');
     }
 
