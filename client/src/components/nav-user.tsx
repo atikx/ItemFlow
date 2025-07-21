@@ -31,6 +31,7 @@ import { useAuthStore } from "@/lib/store";
 import { gql, useMutation } from "@apollo/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation"; // ✅ corrected from next/router
+import client from "@/lib/apollo-client";
 
 const LOGOUT_MUTATION = gql`
   mutation Logout {
@@ -60,6 +61,9 @@ export function NavUser({
       await logoutMutation();
       clearUser();
       toast.success("Logged out successfully!");
+      client.resetStore(); // Reset Apollo Client cache
+      localStorage.removeItem("eventName"); 
+      localStorage.removeItem("eventId"); 
       router.push("/auth/login");
     } catch (err) {
       console.error("Logout failed:", err);
@@ -85,7 +89,11 @@ export function NavUser({
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side={isMobile ? "bottom" : "right"} align="end" sideOffset={4}>
+          <DropdownMenuContent
+            side={isMobile ? "bottom" : "right"}
+            align="end"
+            sideOffset={4}
+          >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
@@ -108,7 +116,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-          
+
             <DropdownMenuItem
               onClick={() => {
                 confirm({

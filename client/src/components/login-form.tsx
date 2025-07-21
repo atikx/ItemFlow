@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useAuthStore } from "@/lib/store";
 import { toast } from "sonner";
@@ -17,6 +17,7 @@ export function LoginForm({ page }: { page?: string }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
 
   const create_organisation = gql`
     mutation CreateOrganisation(
@@ -92,7 +93,7 @@ export function LoginForm({ page }: { page?: string }) {
           id: response.data.loginOrganisation.id,
           name: response.data.loginOrganisation.name,
         });
-          toast.success("Logged in successfully!");
+        toast.success("Logged in successfully!");
         router.push("/home");
       } catch (error: any) {
         console.log("Error logging in:", error);

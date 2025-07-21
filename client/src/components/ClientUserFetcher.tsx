@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { useAuthStore } from "@/lib/store";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const GET_ORG = gql`
   query CheckOrganisationLogin {
@@ -29,6 +30,7 @@ export function ClientUserFetcher() {
     } else if (!loading && error) {
       console.error("Error fetching user:", error);
       clearUser();
+      toast.error("Failed to fetch user data. Please log in.");
       router.push("/auth/login"); // ✅ redirect if not logged in
     }
   }, [data, error, loading, setUser, clearUser, router]);

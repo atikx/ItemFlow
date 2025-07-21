@@ -39,10 +39,13 @@ export function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await logoutMutation(); 
-      clearUser(); 
-      toast.success("Logged out successfully!"); 
-      router.push("/auth/login"); 
+      await logoutMutation();
+      clearUser();
+      toast.success("Logged out successfully!");
+      client.resetStore(); // Reset Apollo Client cache
+      localStorage.removeItem("eventName");
+      localStorage.removeItem("eventId");
+      router.push("/auth/login");
     } catch (err) {
       console.error("Logout failed:", err);
     }
