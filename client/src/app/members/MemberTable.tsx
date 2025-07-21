@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { LocalMember } from "@/types/member.types";
+import { LocalMember } from "@/types/members.types";
 import { EditMemberDialog } from "./EditMemberDialog";
 import { DeleteMemberDialog } from "./DeleteMemberDialog";
 

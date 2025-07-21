@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Edit, Loader2 } from "lucide-react";
-import { LocalMember, MemberFormData } from "@/types/member.types";
+import { LocalMember, MemberFormData } from "@/types/members.types";
 
 interface EditMemberDialogProps {
   member: LocalMember;
