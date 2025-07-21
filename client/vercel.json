@@ -1,7 +1,8 @@
 {
   "build": {
     "env": {
-      "NEXT_DISABLE_ESLINT": "true"
+      "NEXT_DISABLE_ESLINT": "true",
+      "VERCEL_BUILD_CACHE": "true"
     }
   }
 }
