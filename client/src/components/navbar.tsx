@@ -11,7 +11,6 @@ import { useConfirm } from "@/hooks/useConfirm";
 import client from "@/lib/apollo-client";
 
 const navLinks = [
-  { name: "Home", href: "/home" },
   { name: "Items", href: "/items" },
   { name: "Events", href: "/events" },
   { name: "Departments", href: "/departments" },
