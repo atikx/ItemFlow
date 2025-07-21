@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/sonner";
 import { ApolloWrapper } from "@/components/apollo-wrapper";
 import { ClientUserFetcher } from "@/components/ClientUserFetcher";
+import { Watermark } from "@/components/watermark";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,13 +42,14 @@ export default function RootLayout({
 
           <SidebarProvider defaultOpen={false}>
             <div className="flex h-screen w-full">
-              <AppSidebar  collapsible="icon" />
+              <AppSidebar collapsible="icon" />
 
               <Separator orientation="vertical" />
               <main className="flex-1 overflow-y-auto">
                 <Navbar />
                 {/* Main content area */}
                 <div>{children}</div>
+                <Watermark />
               </main>
             </div>
           </SidebarProvider>
