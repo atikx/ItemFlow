@@ -18,7 +18,6 @@ export function LoginForm({ page }: { page?: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-
   const create_organisation = gql`
     mutation CreateOrganisation(
       $createOrganisationInput: CreateOrganisationInput!
@@ -68,8 +67,10 @@ export function LoginForm({ page }: { page?: string }) {
           id: response.data.createOrganisation.id,
           name: response.data.createOrganisation.name,
         });
-        toast.success("Organisation created successfully!");
-        router.push("/home");
+        toast.success("Organisation created successfully!", {
+          description: "start managing your members now.",
+        });
+        router.push("/members");
       } catch (error: any) {
         console.error("Error creating organisation:", error);
         const errorMessage =
@@ -94,7 +95,7 @@ export function LoginForm({ page }: { page?: string }) {
           name: response.data.loginOrganisation.name,
         });
         toast.success("Logged in successfully!");
-        router.push("/home");
+        router.push("/members");
       } catch (error: any) {
         console.log("Error logging in:", error);
         const errorMessage =
