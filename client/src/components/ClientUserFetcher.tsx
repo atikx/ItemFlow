@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { gql, useQuery } from '@apollo/client';
-import { useEffect } from 'react';
-import { useAuthStore } from '@/lib/store';
-import { useRouter } from 'next/navigation';
+import { gql, useQuery } from "@apollo/client";
+import { useEffect } from "react";
+import { useAuthStore } from "@/lib/store";
+import { useRouter } from "next/navigation";
 
 const GET_ORG = gql`
   query CheckOrganisationLogin {
@@ -21,14 +21,15 @@ export function ClientUserFetcher() {
 
   useEffect(() => {
     if (data?.checkOrganisationLogin) {
+      console.log(data);
       setUser({
         id: data.checkOrganisationLogin.id,
         name: data.checkOrganisationLogin.name,
       });
     } else if (!loading && error) {
-      console.error('Error fetching user:', error);
+      console.error("Error fetching user:", error);
       clearUser();
-      router.push('/auth/login'); // ✅ redirect if not logged in
+      router.push("/auth/login"); // ✅ redirect if not logged in
     }
   }, [data, error, loading, setUser, clearUser, router]);
 

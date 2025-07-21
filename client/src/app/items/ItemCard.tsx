@@ -1,7 +1,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import { Package } from "lucide-react";
-import { Item } from "@/types/item.types";
+import { Item } from "@/types/items.types";
 import { EditItemDialog } from "./EditItemDialog";
 import { DeleteItemDialog } from "./DeleteItemDialog";
 

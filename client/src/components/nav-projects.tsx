@@ -25,6 +25,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function NavProjects({
   projects,
@@ -36,11 +37,19 @@ export function NavProjects({
   }[];
 }) {
   const { isMobile } = useSidebar();
+  const [eventName, seteventName] = useState("Event");
+
+  useEffect(() => {
+    const storedEventName = localStorage.getItem("eventName");
+    if (storedEventName) {
+      seteventName(storedEventName);
+    }
+  }, []);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>
-        Manage {localStorage.getItem("eventName") || "Event"}
+        Manage {eventName}
       </SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
