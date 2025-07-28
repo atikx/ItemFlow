@@ -1,0 +1,53 @@
+type InductionContestant {
+  id: ID!
+  name: String
+  email: String
+  finalScore: Float
+  evaluations: [InductionEvaluation!]
+}
+
+input CreateInductionContestantInput {
+  name: String!
+  email: String!
+}
+
+input UpdateInductionContestantInput {
+  id: ID!
+  name: String
+  email: String
+}
+
+type InductionEvaluation {
+  id: ID!
+  score: Float!
+  quality: InductionQuantity!
+}
+
+input InductionEvaluationInput {
+  contestantId: ID!
+  totalScore: Float!
+  qualities: [InductionQuantityInput!]!
+}
+
+input InductionQuantityInput {
+  qualityId: ID!
+  score: Float!
+}
+
+type Query {
+  inductionContestants: [InductionContestant]!
+  getContestantEvaluationData(id: ID!): InductionContestant
+}
+
+type Mutation {
+  createInductionContestant(
+    createInductionContestantInput: CreateInductionContestantInput!
+  ): InductionContestant!
+  updateInductionContestant(
+    updateInductionContestantInput: UpdateInductionContestantInput!
+  ): InductionContestant!
+  removeInductionContestant(id: ID!): Boolean!
+  evaluateContestant(
+    evaluateContestantInput: InductionEvaluationInput!
+  ): InductionContestant!
+}

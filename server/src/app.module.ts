@@ -14,6 +14,9 @@ import { EventsModule } from './events/events.module';
 import { ItemsModule } from './items/items.module';
 import { ItemLogsModule } from './item-logs/item-logs.module';
 import { DateResolver } from 'graphql-scalars';
+import { InductionQuantitiesModule } from './induction-quantities/induction-quantities.module';
+import { InductionContestantsModule } from './induction-contestants/induction-contestants.module';
+import { InductionEvaluationsModule } from './induction-evaluations/induction-evaluations.module';
 
 @Module({
   imports: [
@@ -34,6 +37,9 @@ import { DateResolver } from 'graphql-scalars';
     EventsModule,
     ItemsModule,
     ItemLogsModule,
+    InductionQuantitiesModule,
+    InductionContestantsModule,
+    InductionEvaluationsModule,
   ],
   controllers: [AppController],
   providers: [

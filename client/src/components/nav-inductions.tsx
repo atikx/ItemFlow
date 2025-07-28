@@ -27,32 +27,26 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export function NavProjects({
-  projects,
+export function NavInductions({
+  inductions,
 }: {
-  projects: {
+  inductions: {
     name: string;
     url: string;
     icon: LucideIcon;
   }[];
 }) {
   const { isMobile } = useSidebar();
-  const [eventName, seteventName] = useState("Event");
 
-  useEffect(() => {
-    const storedEventName = localStorage.getItem("eventName");
-    if (storedEventName) {
-      seteventName(storedEventName);
-    }
-  }, []);
+ 
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>
-        Manage {eventName}
+        Manage Inductions
       </SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {inductions.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <Link href={item.url}>

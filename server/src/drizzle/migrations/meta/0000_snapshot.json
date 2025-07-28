@@ -1,5 +1,5 @@
 {
-  "id": "ba0c4494-de45-4316-8037-0cc81bbbe510",
+  "id": "b19359da-fe89-4a2e-9275-2e18c406c79c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -31,7 +31,7 @@
           "name": "organisationId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
@@ -58,15 +58,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "departments_email_unique": {
-          "name": "departments_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -88,17 +80,17 @@
           "primaryKey": false,
           "notNull": true
         },
-        "startDate": {
-          "name": "startDate",
-          "type": "date",
+        "year": {
+          "name": "year",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "organisationId": {
           "name": "organisationId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
@@ -145,19 +137,19 @@
           "name": "itemId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "eventId": {
           "name": "eventId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "issuedBy": {
           "name": "issuedBy",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "quantityIssued": {
           "name": "quantityIssued",
@@ -167,9 +159,9 @@
         },
         "expectedReturnDate": {
           "name": "expectedReturnDate",
-          "type": "date",
+          "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "returnedAt": {
           "name": "returnedAt",
@@ -181,13 +173,13 @@
           "name": "organisationId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "departmentId": {
           "name": "departmentId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
@@ -222,7 +214,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "itemLogs_issuedBy_members_id_fk": {
@@ -235,7 +227,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "itemLogs_organisationId_organisations_id_fk": {
@@ -304,7 +296,7 @@
           "name": "organisationId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
@@ -363,7 +355,7 @@
           "name": "organisationId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",

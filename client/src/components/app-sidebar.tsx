@@ -9,6 +9,8 @@ import {
   Frame,
   LifeBuoy,
   Map,
+  Panda,
+  PersonStanding,
   PieChart,
   Send,
   Settings2,
@@ -19,9 +21,10 @@ import {
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
+import { NavFest } from "@/components/nav-fest";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
+import { NavInductions } from "./nav-inductions";
 import {
   Sidebar,
   SidebarContent,
@@ -75,11 +78,23 @@ const data = {
       icon: Send,
     },
   ],
-  projects: [
+  fest: [
     {
       name: "Inventory",
       url: "/inventory",
       icon: Frame,
+    },
+  ],
+  inductions: [
+    {
+      name: "Contestants",
+      url: "/inductions/contestants",
+      icon: PersonStanding,
+    },
+    {
+      name: "Qualities",
+      url: "/inductions/qualities",
+      icon: Panda,
     },
   ],
 };
@@ -112,7 +127,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavFest projects={data.fest} />
+        <NavInductions inductions={data.inductions} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

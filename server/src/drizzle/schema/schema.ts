@@ -4,3 +4,6 @@ export * from './members.schema';
 export * from './items.schema';
 export * from './departments.schema';
 export * from './itemLogs.schema';
+export * from './inductionContestants.schema';
+export * from './inductionEvaluations.schema';
+export * from './inductionQuantities.schema';

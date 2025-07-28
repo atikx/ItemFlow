@@ -48,7 +48,7 @@ export default function RootLayout({
               <main className="flex-1 overflow-y-auto">
                 <Navbar />
                 {/* Main content area */}
-                <div>{children}</div>
+                <div className="min-h-[80vh]">{children}</div>
                 <Watermark />
               </main>
             </div>

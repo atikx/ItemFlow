@@ -1,6 +1,6 @@
 {
-  "id": "bb866850-7037-40d0-9bf9-ac6fb1c5e9bb",
-  "prevId": "08ea81b7-44d6-4b82-94f5-4aa7f01448e0",
+  "id": "bcfc21d6-2ccb-46eb-83ac-a5e347db5dba",
+  "prevId": "1d34b8c5-de4e-48dd-b900-e97c4bc9925a",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -58,15 +58,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "departments_email_unique": {
-          "name": "departments_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -130,6 +122,207 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.inductionContestants": {
+      "name": "inductionContestants",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "finalScore": {
+          "name": "finalScore",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "organisationId": {
+          "name": "organisationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "inductionContestants_organisationId_organisations_id_fk": {
+          "name": "inductionContestants_organisationId_organisations_id_fk",
+          "tableFrom": "inductionContestants",
+          "tableTo": "organisations",
+          "columnsFrom": [
+            "organisationId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.inductionEvaluations": {
+      "name": "inductionEvaluations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "contestantId": {
+          "name": "contestantId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "qualityId": {
+          "name": "qualityId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "score": {
+          "name": "score",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "organisationId": {
+          "name": "organisationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "inductionEvaluations_contestantId_inductionContestants_id_fk": {
+          "name": "inductionEvaluations_contestantId_inductionContestants_id_fk",
+          "tableFrom": "inductionEvaluations",
+          "tableTo": "inductionContestants",
+          "columnsFrom": [
+            "contestantId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "inductionEvaluations_qualityId_inductionQualities_id_fk": {
+          "name": "inductionEvaluations_qualityId_inductionQualities_id_fk",
+          "tableFrom": "inductionEvaluations",
+          "tableTo": "inductionQualities",
+          "columnsFrom": [
+            "qualityId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "inductionEvaluations_organisationId_organisations_id_fk": {
+          "name": "inductionEvaluations_organisationId_organisations_id_fk",
+          "tableFrom": "inductionEvaluations",
+          "tableTo": "organisations",
+          "columnsFrom": [
+            "organisationId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.inductionQualities": {
+      "name": "inductionQualities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weightage": {
+          "name": "weightage",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "organisationId": {
+          "name": "organisationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "inductionQualities_organisationId_organisations_id_fk": {
+          "name": "inductionQualities_organisationId_organisations_id_fk",
+          "tableFrom": "inductionQualities",
+          "tableTo": "organisations",
+          "columnsFrom": [
+            "organisationId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.itemLogs": {
       "name": "itemLogs",
       "schema": "",
@@ -167,9 +360,9 @@
         },
         "expectedReturnDate": {
           "name": "expectedReturnDate",
-          "type": "date",
+          "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "returnedAt": {
           "name": "returnedAt",
@@ -222,7 +415,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "itemLogs_issuedBy_members_id_fk": {
@@ -235,7 +428,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "itemLogs_organisationId_organisations_id_fk": {
