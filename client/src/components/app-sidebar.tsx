@@ -7,6 +7,7 @@ import {
   Boxes,
   Command,
   Frame,
+  Handshake,
   LifeBuoy,
   Map,
   Panda,
@@ -95,6 +96,11 @@ const data = {
       name: "Qualities",
       url: "/inductions/qualities",
       icon: Panda,
+    },
+    {
+      name: "Finalize",
+      url: "/inductions/finalize",
+      icon: Handshake,
     },
   ],
 };
