@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
 app.enableCors({
-  origin: ['http://localhost:3000', 'https://item-flow.vercel.app',"https://studio.apollographql.com"],
+  origin: ['https://item-flow.vercel.app',"http://localhost:3000"],
   credentials: true,
 });
 
