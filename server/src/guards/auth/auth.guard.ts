@@ -27,7 +27,6 @@ export class AuthGuard implements CanActivate {
     const token = req.cookies['org_id'];
 
     if (!token) {
-      console.log('AuthGuard: No token found in cookies');
       throw new UnauthorizedException('No authentication token provided');
     }
 
@@ -38,14 +37,12 @@ export class AuthGuard implements CanActivate {
       throw new ForbiddenException('Invalid or expired token');
     }
 
-   
+
 
     const [org] = await this.db
       .select()
       .from(organisations)
       .where(eq(organisations.id, payload.org_id));
-
-
 
     if (!org) {
       throw new UnauthorizedException('Organisation not found');
