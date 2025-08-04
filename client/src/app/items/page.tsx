@@ -3,10 +3,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Package, Search, Loader2, AlertCircle, Plus } from "lucide-react";
+import {
+  Package,
+  Search,
+  Loader2,
+  AlertCircle,
+  Plus,
+  Download,
+} from "lucide-react";
 import { useItems } from "@/hooks/useItems";
 import { AddItemDialog } from "./AddItemDialog";
 import { ItemCard } from "./ItemCard";
+import { toast } from "sonner";
+import api from "@/lib/axiosinstance";
 
 export default function ItemsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,6 +36,38 @@ export default function ItemsPage() {
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Export function
+  const handleExportItems = async () => {
+    try {
+      const response = await api.get("/export-items/download", {
+        responseType: "arraybuffer", 
+      });
+
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", "exported_items.xlsx");
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Items exported successfully!");
+      console.log("File download has been triggered.");
+    } catch (error) {
+      console.error("Error exporting items:", error);
+      toast.error("Failed to export items. Please try again later.");
+    }
+  };
 
   // Loading state
   if (loading) {
@@ -97,7 +138,17 @@ export default function ItemsPage() {
                 className="pl-10 w-80"
               />
             </div>
-            <AddItemDialog onAddItem={addItem} isLoading={isAddLoading} />
+            <div className="flex gap-2">
+              <AddItemDialog onAddItem={addItem} isLoading={isAddLoading} />
+              <Button
+                onClick={handleExportItems}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Export Items
+              </Button>
+            </div>
           </div>
 
           {/* Summary */}

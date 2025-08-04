@@ -20,11 +20,10 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
 
-    console.log('AuthGuard: Checking authentication...');
 
     const ctx = GqlExecutionContext.create(context);
     const req = ctx.getContext().req;
-    console.log('AuthGuard: Request context:', req.cookies || 'No cookies found');
+
     const token = req.cookies['org_id'];
 
     if (!token) {
@@ -39,14 +38,14 @@ export class AuthGuard implements CanActivate {
       throw new ForbiddenException('Invalid or expired token');
     }
 
-    console.log(`AuthGuard: Verifying organisation with ID ${payload.org_id}`);
+   
 
     const [org] = await this.db
       .select()
       .from(organisations)
       .where(eq(organisations.id, payload.org_id));
 
-    console.log(`AuthGuard: Found organisation:`, org);
+
 
     if (!org) {
       throw new UnauthorizedException('Organisation not found');

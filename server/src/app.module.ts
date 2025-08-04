@@ -17,6 +17,10 @@ import { DateResolver } from 'graphql-scalars';
 import { InductionQuantitiesModule } from './induction-quantities/induction-quantities.module';
 import { InductionContestantsModule } from './induction-contestants/induction-contestants.module';
 import { InductionEvaluationsModule } from './induction-evaluations/induction-evaluations.module';
+import { ExcelCreatorService } from './excel-creator/excel-creator.service';
+import { ExcelCreatorController } from './excel-creator/excel-creator.controller';
+import { ExcelCreatorModule } from './excel-creator/excel-creator.module';
+import { ExportItemsModule } from './export-items/export-items.module';
 
 @Module({
   imports: [
@@ -40,14 +44,17 @@ import { InductionEvaluationsModule } from './induction-evaluations/induction-ev
     InductionQuantitiesModule,
     InductionContestantsModule,
     InductionEvaluationsModule,
+    ExcelCreatorModule,
+    ExportItemsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ExcelCreatorController],
   providers: [
     AppService,
     {
       provide: 'DateResolver',
       useValue: DateResolver,
     },
+    ExcelCreatorService,
   ],
 })
 export class AppModule {}
