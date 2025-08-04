@@ -23,6 +23,7 @@ export class AuthGuard implements CanActivate {
 
     const ctx = GqlExecutionContext.create(context);
     const req = ctx.getContext().req;
+
     const token = req.cookies['org_id'];
 
     if (!token) {
@@ -37,11 +38,11 @@ export class AuthGuard implements CanActivate {
     }
 
 
+
     const [org] = await this.db
       .select()
       .from(organisations)
       .where(eq(organisations.id, payload.org_id));
-
 
     if (!org) {
       throw new UnauthorizedException('Organisation not found');

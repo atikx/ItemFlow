@@ -6,6 +6,9 @@ import { items } from './items.schema';
 import { departments } from './departments.schema';
 import { events } from './events.schema';
 import { itemLogs } from './itemLogs.schema';
+import { inductionQualities } from './inductionQuantities.schema';
+import { inductionContestants } from './inductionContestants.schema';
+import { inductionEvaluations } from './inductionEvaluations.schema';
 
 export const organisations = pgTable('organisations', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -20,4 +23,7 @@ export const organisationRelations = relations(organisations, ({ many }) => ({
   departments: many(departments),
   events: many(events),
   itemLogs: many(itemLogs),
+  inductionQualities: many(inductionQualities),
+  inductionContestants: many(inductionContestants),
+  inductionEvaluations: many(inductionEvaluations),
 }));

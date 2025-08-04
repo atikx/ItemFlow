@@ -1,0 +1,28 @@
+type InductionQuantity {
+  id: ID!
+  name: String!
+  weightage: Float!
+  organisationId: ID!
+}
+
+input CreateInductionQuantityInput {
+  name: String!
+  weightage: Float!
+}
+
+input UpdateInductionQuantityInput {
+  id: ID!
+  name: String
+  weightage: Float
+}
+
+type Query {
+  inductionQuantities: [InductionQuantity]!
+  inductionQuantity(id: Int!): InductionQuantity
+}
+
+type Mutation {
+  createInductionQuantity(createInductionQuantityInput: CreateInductionQuantityInput!): InductionQuantity!
+  updateInductionQuantity(updateInductionQuantityInput: UpdateInductionQuantityInput!): InductionQuantity!
+  removeInductionQuantity(id: ID!): Boolean!
+}

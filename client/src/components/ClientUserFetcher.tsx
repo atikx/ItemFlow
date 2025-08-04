@@ -22,7 +22,6 @@ export function ClientUserFetcher() {
 
   useEffect(() => {
     if (data?.checkOrganisationLogin) {
-      console.log(data);
       setUser({
         id: data.checkOrganisationLogin.id,
         name: data.checkOrganisationLogin.name,
