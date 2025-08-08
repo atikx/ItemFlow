@@ -21,6 +21,7 @@ import { ExcelCreatorService } from './excel-creator/excel-creator.service';
 import { ExcelCreatorController } from './excel-creator/excel-creator.controller';
 import { ExcelCreatorModule } from './excel-creator/excel-creator.module';
 import { ExportItemsModule } from './export-items/export-items.module';
+import { ExportItemLogsModule } from './export-item-logs/export-item-logs.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ExportItemsModule } from './export-items/export-items.module';
     InductionEvaluationsModule,
     ExcelCreatorModule,
     ExportItemsModule,
+    ExportItemLogsModule,
   ],
   controllers: [AppController, ExcelCreatorController],
   providers: [

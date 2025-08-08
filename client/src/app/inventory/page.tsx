@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Package2, Filter, Loader2, AlertCircle } from "lucide-react";
+import {
+  Plus,
+  Package2,
+  Filter,
+  Loader2,
+  AlertCircle,
+  Download,
+} from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useInventoryData } from "@/hooks/useInventoryData";
 import { useInventoryActions } from "@/hooks/useInventoryActions";
@@ -18,6 +25,8 @@ import { InventoryHeader } from "./InventoryHeader";
 import { StatsGrid } from "./StatsGrid";
 import { IssueItemDialog } from "./IssueItemDialog";
 import { ItemLogCard } from "./ItemLogCard";
+import api from "@/lib/axiosinstance";
+import { toast } from "sonner";
 
 export default function InventoryPage() {
   const [isIssueDialogOpen, setIsIssueDialogOpen] = useState(false);
@@ -45,12 +54,46 @@ export default function InventoryPage() {
     categorizeItemLogs(itemLogs);
   const filteredLogs = filterLogs(itemLogs, filterStatus);
 
+  console.log("Filtered logs:", filteredLogs);
+
   // Helper functions with bound data
   const getItemNameBound = (itemId: string) => getItemName(itemId, items);
   const getMemberNameBound = (memberId: string) =>
     getMemberName(memberId, members);
   const getDepartmentNameBound = (deptId: string) =>
     getDepartmentName(deptId, departments);
+
+  // Excel export function
+  const handleExportToExcel = async () => {
+    try {
+      const response = await api.get(`/export-item-logs/download/${eventId}`, {
+        responseType: "arraybuffer",
+      });
+
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", "exported_itemLogs.xlsx");
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Items exported successfully!");
+      console.log("File download has been triggered.");
+    } catch (error) {
+      console.error("Error exporting items:", error);
+      toast.error("Failed to export items. Please try again later.");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -136,11 +179,22 @@ export default function InventoryPage() {
                 Overdue
               </TabsTrigger>
             </TabsList>
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">
-                {filteredLogs.length} logs
-              </span>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="default"
+                size="sm"
+                onClick={handleExportToExcel}
+                disabled={filteredLogs.length === 0}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export to Excel
+              </Button>
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
+                  {filteredLogs.length} logs
+                </span>
+              </div>
             </div>
           </div>
 
