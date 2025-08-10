@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ItemFlow",
+  title: "Item-Flow",
   description: "Inventory Manager for Campus Clubs and Events",
 };
 
