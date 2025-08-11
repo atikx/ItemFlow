@@ -97,11 +97,6 @@ const data = {
       url: "/inductions/qualities",
       icon: Panda,
     },
-    {
-      name: "Finalize",
-      url: "/inductions/finalize",
-      icon: Handshake,
-    },
   ],
 };
 
@@ -112,7 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   if (path.startsWith("/auth")) {
     return null; // Don't render sidebar on auth pages
   }
-  const auth  = useAuthStore();
+  const auth = useAuthStore();
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -137,9 +132,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavInductions inductions={data.inductions} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
-        {auth.user && <NavUser user={auth.user} />}
-      </SidebarFooter>
+      <SidebarFooter>{auth.user && <NavUser user={auth.user} />}</SidebarFooter>
     </Sidebar>
   );
 }
