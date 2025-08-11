@@ -1,6 +1,7 @@
-export interface FormData {
+export interface  FormData {
   itemId: string;
   issuedBy: string;
+  phone: string;
   departmentId: string;
   quantityIssued: string;
   expectedReturnDate: string;

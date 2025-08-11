@@ -7,6 +7,7 @@ export const GET_ITEM_LOGS = gql`
       itemId
       eventId
       issuedBy
+      phone
       departmentId
       eventId
       expectedReturnDate
@@ -22,6 +23,7 @@ export const CREATE_ITEM_LOG = gql`
       id
       itemId
       eventId
+      phone
       issuedBy
       departmentId
       eventId
@@ -38,6 +40,7 @@ export const UPDATE_ITEM_LOG = gql`
       itemId
       eventId
       issuedBy
+      phone
       departmentId
       eventId
       expectedReturnDate

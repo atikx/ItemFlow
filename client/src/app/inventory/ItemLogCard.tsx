@@ -8,6 +8,7 @@ import {
   CheckCircle,
   Clock,
   Loader2,
+  Phone,
 } from "lucide-react";
 import { ItemLog } from "@/types/itemLogs.types";
 import { formatDate, isOverdue } from "@/utils/inventoryUtils";
@@ -48,6 +49,12 @@ export const ItemLogCard = ({
                 <User className="h-3 w-3" />
                 {getMemberName(log.issuedBy)}
               </span>
+              {log.phone && (
+                <span className="flex items-center gap-1">
+                  <Phone className="h-3 w-3" />
+                  {log.phone}
+                </span>
+              )}
               <span className="flex items-center gap-1">
                 <Building className="h-3 w-3" />
                 {getDepartmentName(log.departmentId)}
