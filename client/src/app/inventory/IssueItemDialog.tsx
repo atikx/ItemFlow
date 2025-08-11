@@ -37,6 +37,7 @@ export const IssueItemDialog = ({
   const [formData, setFormData] = useState<FormData>({
     itemId: "",
     issuedBy: "",
+    phone: "",
     departmentId: "",
     quantityIssued: "",
     expectedReturnDate: "",
@@ -46,6 +47,7 @@ export const IssueItemDialog = ({
     setFormData({
       itemId: "",
       issuedBy: "",
+      phone: "",
       departmentId: "",
       quantityIssued: "",
       expectedReturnDate: "",
@@ -111,6 +113,20 @@ export const IssueItemDialog = ({
               }))}
             disabled={isLoading}
           />
+
+          <div className="grid gap-2">
+            <Label htmlFor="phone">Phone Number *</Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
+              placeholder="Enter phone number"
+              disabled={isLoading}
+            />
+          </div>
 
           <SearchableSelect
             label="Department *"

@@ -33,7 +33,8 @@ export const useInventoryActions = (eventId: string) => {
       !formData.itemId ||
       !formData.issuedBy ||
       !formData.departmentId ||
-      !formData.quantityIssued
+      !formData.quantityIssued ||
+      !formData.phone
     ) {
       toast.error("Please fill in all required fields");
       return false;
@@ -54,6 +55,7 @@ export const useInventoryActions = (eventId: string) => {
             itemId: formData.itemId,
             eventId,
             issuedBy: formData.issuedBy,
+            phone: formData.phone,
             quantityIssued: quantity,
             expectedReturnDate: formData.expectedReturnDate || null,
             departmentId: formData.departmentId,

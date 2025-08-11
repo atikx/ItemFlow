@@ -60,6 +60,7 @@ export class ItemLogsService {
           itemId: createItemLogInput.itemId,
           eventId: createItemLogInput.eventId,
           issuedBy: createItemLogInput.issuedBy,
+          phone: createItemLogInput.phone,
           quantityIssued: createItemLogInput.quantityIssued,
           expectedReturnDate: new Date(createItemLogInput.expectedReturnDate),
           organisationId: org_id,

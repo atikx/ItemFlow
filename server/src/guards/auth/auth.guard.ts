@@ -38,7 +38,6 @@ export class AuthGuard implements CanActivate {
     }
 
 
-
     const [org] = await this.db
       .select()
       .from(organisations)

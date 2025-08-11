@@ -25,6 +25,7 @@ export interface ItemLog {
   itemId: string;
   eventId: string;
   issuedBy: string;
+  phone: string;
   quantityIssued: number;
   expectedReturnDate: string | null;
   returnedAt: string | null;

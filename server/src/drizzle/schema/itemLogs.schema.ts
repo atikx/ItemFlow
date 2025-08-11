@@ -26,6 +26,7 @@ export const itemLogs = pgTable('itemLogs', {
   issuedBy: uuidType('issuedBy')
     .references(() => members.id, { onDelete: 'cascade' })
     .notNull(),
+  phone: text('phone').notNull(),
   quantityIssued: integer('quantityIssued').notNull(),
   expectedReturnDate: timestamp('expectedReturnDate', {
     withTimezone: true,

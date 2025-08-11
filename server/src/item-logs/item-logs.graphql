@@ -5,6 +5,7 @@ type ItemLog {
   itemId: ID!
   eventId: ID!
   issuedBy: ID!
+  phone: String!
   quantityIssued: Int!
   expectedReturnDate: String!
   returnedAt: String
@@ -16,6 +17,7 @@ input CreateItemLogInput {
   itemId: ID!
   eventId: ID!
   issuedBy: ID!
+  phone: String!
   quantityIssued: Int!
   expectedReturnDate: String!
   departmentId: ID!
