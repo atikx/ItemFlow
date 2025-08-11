@@ -19,6 +19,7 @@ export class ExportItemLogsService {
       worksheet.columns = [
         { header: 'Item Name', key: 'item', width: 30 },
         { header: 'Issued To', key: 'department', width: 30 },
+        { header: 'Phone Number', key: 'phone', width: 30 },
         { header: 'Issued By', key: 'issuedBy', width: 30 },
         { header: 'Quantity Issued', key: 'quantityIssued', width: 20 },
         { header: 'Issued At', key: 'createdAt', width: 30 },
