@@ -9,6 +9,7 @@ type ItemLog {
   quantityIssued: Int!
   expectedReturnDate: String!
   returnedAt: String
+  returnedBy: String
   organisationId: ID!
   departmentId: ID!
 }
@@ -35,8 +36,13 @@ type Query {
   itemLog(id: ID!): ItemLog
 }
 
+input ReturnItemLogInput {
+  id: ID!
+  returnedBy: ID!
+}
+
 type Mutation {
   createItemLog(createItemLogInput: CreateItemLogInput!): ItemLog!
   updateItemLog(updateItemLogInput: UpdateItemLogInput!): ItemLog!
-  returnItemLog(id: ID!): Boolean!
+  returnItemLog(returnItemLogInput: ReturnItemLogInput!): Boolean!
 }

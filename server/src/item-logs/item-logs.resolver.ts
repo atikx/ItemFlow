@@ -4,6 +4,7 @@ import { CreateItemLogInput } from './dto/create-item-log.input';
 import { UpdateItemLogInput } from './dto/update-item-log.input';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { ReturnItemLogInput } from './dto/return-item-log.input';
 
 @Resolver('ItemLog')
 @UseGuards(AuthGuard)
@@ -46,7 +47,14 @@ export class ItemLogsResolver {
   }
 
   @Mutation('returnItemLog')
-  return(@Args('id') id: string, @Context() context: { req: any }) {
-    return this.itemLogsService.return(context.req.organisation.id, id);
+  return(
+    @Args('returnItemLogInput') returnItemLogInput: ReturnItemLogInput,
+    @Context() context: { req: any },
+  ) {
+    return this.itemLogsService.return(
+      context.req.organisation.id,
+      returnItemLogInput.id,
+      returnItemLogInput.returnedBy,
+    );
   }
 }

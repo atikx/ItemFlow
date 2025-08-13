@@ -32,6 +32,9 @@ export const itemLogs = pgTable('itemLogs', {
     withTimezone: true,
   }).notNull(),
   returnedAt: timestamp('returnedAt', { withTimezone: true }),
+  returnedBy: uuidType('returnedBy').references(() => members.id, {
+    onDelete: 'cascade',
+  }),
   organisationId: uuidType('organisationId')
     .references(() => organisations.id, { onDelete: 'cascade' })
     .notNull(),
