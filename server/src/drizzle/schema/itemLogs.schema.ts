@@ -53,6 +53,10 @@ export const itemLogsRelations = relations(itemLogs, ({ one }) => ({
     fields: [itemLogs.issuedBy],
     references: [members.id],
   }),
+  returnedBy: one(members, {
+    fields: [itemLogs.returnedBy],
+    references: [members.id],
+  }),
   event: one(events, {
     fields: [itemLogs.eventId],
     references: [events.id],

@@ -29,6 +29,7 @@ export class ExportItemLogsService {
           width: 30,
         },
         { header: 'Returned At', key: 'returnedAt', width: 30 },
+        { header: 'Returned By', key: 'returnedBy', width: 30 },
       ];
 
       const logsList = await this.db.query.itemLogs.findMany({
@@ -47,6 +48,11 @@ export class ExportItemLogsService {
               name: true,
             },
           },
+          returnedBy: {
+            columns: {
+              name: true,
+            },
+          },
           department: {
             columns: {
               name: true,
@@ -60,6 +66,7 @@ export class ExportItemLogsService {
         item: log.item.name,
         issuedBy: log.issuedBy.name,
         department: log.department.name,
+        returnedBy: log.returnedBy?.name,
       }));
 
       // Add rows with data
