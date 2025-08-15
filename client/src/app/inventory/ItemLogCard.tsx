@@ -12,6 +12,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Package2,
   User,
   Building,
@@ -20,10 +33,12 @@ import {
   Clock,
   Loader2,
   Phone,
+  Check,
+  ChevronsUpDown,
 } from "lucide-react";
 import { ItemLog, Member } from "@/types/itemLogs.types";
 import { formatDate, isOverdue } from "@/utils/inventoryUtils";
-import { SearchableSelect } from "./SearchableSelect";
+import { cn } from "@/lib/utils";
 
 interface ItemLogCardProps {
   log: ItemLog;
@@ -34,6 +49,80 @@ interface ItemLogCardProps {
   returningLogId: string | null;
   members: Member[];
 }
+
+// Fixed SearchableSelect component with custom filter
+const SearchableSelect = ({
+  value,
+  onValueChange,
+  options,
+  placeholder = "Select an option...",
+  searchPlaceholder = "Search...",
+  disabled = false,
+}: {
+  value: string;
+  onValueChange: (value: string) => void;
+  options: { value: string; label: string }[];
+  placeholder?: string;
+  searchPlaceholder?: string;
+  disabled?: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const selectedOption = options.find((option) => option.value === value);
+
+  // Custom filter function to search by label instead of value
+  const filter = (value: string, search: string) => {
+    const option = options.find((opt) => opt.value === value);
+    if (!option) return 0;
+    const label = option.label.toLowerCase();
+    return label.includes(search.toLowerCase()) ? 1 : 0;
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between"
+          disabled={disabled}
+        >
+          {selectedOption ? selectedOption.label : placeholder}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full p-0" align="start">
+        <Command filter={filter}>
+          <CommandInput placeholder={searchPlaceholder} />
+          <CommandList>
+            <CommandEmpty>No option found.</CommandEmpty>
+            <CommandGroup className="max-h-64 overflow-auto">
+              {options.map((option) => (
+                <CommandItem
+                  key={option.value}
+                  value={option.value}
+                  onSelect={(currentValue) => {
+                    onValueChange(currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === option.value ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {option.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+};
 
 export const ItemLogCard = ({
   log,
@@ -46,7 +135,7 @@ export const ItemLogCard = ({
 }: ItemLogCardProps) => {
   const [showReturnDialog, setShowReturnDialog] = useState(false);
   const [returnedBy, setReturnedBy] = useState("");
-  
+
   const isReturned = !!log.returnedAt;
   const overdue =
     !log.returnedAt && isOverdue(log.expectedReturnDate, log.returnedAt);
@@ -79,6 +168,15 @@ export const ItemLogCard = ({
 
   const isFormValid = returnedBy.trim() !== "";
   const isLoading = returningLogId === log.id;
+
+  // Prepare options for the select
+  const memberOptions = members
+    .filter(member => member && member.name && member.name.trim() !== '')
+    .sort((a, b) => b.batch - a.batch)
+    .map((member) => ({
+      value: member.id,
+      label: `${member.name} (Batch ${member.batch})`,
+    }));
 
   return (
     <>
@@ -192,20 +290,17 @@ export const ItemLogCard = ({
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
-            <SearchableSelect
-              label="Returned By *"
-              placeholder="Select a member..."
-              searchPlaceholder="Search members..."
-              value={returnedBy}
-              onValueChange={setReturnedBy}
-              options={[...members]
-                .sort((a, b) => b.batch - a.batch)
-                .map((member) => ({
-                  value: member.id,
-                  label: `${member.name} (Batch ${member.batch})`,
-                }))}
-              disabled={isLoading}
-            />
+            <div className="space-y-2">
+              <Label htmlFor="returnedBy">Returned By *</Label>
+              <SearchableSelect
+                value={returnedBy}
+                onValueChange={setReturnedBy}
+                options={memberOptions}
+                placeholder="Select a member..."
+                searchPlaceholder="Search members..."
+                disabled={isLoading}
+              />
+            </div>
           </div>
 
           <DialogFooter>
