@@ -93,7 +93,6 @@ export class ItemLogsService {
           ),
         );
 
-      
       return logs;
     } catch (error) {
       console.error('Error fetching item logs:', error);
@@ -109,8 +108,16 @@ export class ItemLogsService {
     return `This action updates an itemLog`;
   }
 
-  async return(org_id: string, id: string) {
+  async return(org_id: string, id: string, returnedBy: string) {
     try {
+      // if returning member not mentioned
+      if (!returnedBy) {
+        throwGraphQLError(
+          'Returning member not mentioned',
+          'RETURNING_MEMBER_NOT_MENTIONED',
+        );
+      }
+
       // firstly find the item log
       const [itemLog] = await this.db
         .select({
@@ -147,6 +154,7 @@ export class ItemLogsService {
         .update(itemLogs)
         .set({
           returnedAt: new Date(),
+          returnedBy: returnedBy,
         })
         .where(and(eq(itemLogs.id, id), eq(itemLogs.organisationId, org_id)))
         .returning();
