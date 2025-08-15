@@ -13,6 +13,7 @@ export const GET_ITEM_LOGS = gql`
       expectedReturnDate
       quantityIssued
       returnedAt
+      returnedBy
     }
   }
 `;
@@ -50,7 +51,7 @@ export const UPDATE_ITEM_LOG = gql`
 `;
 
 export const RETURN_ITEM_LOG = gql`
-  mutation ReturnItemLog($returnItemLogId: ID!) {
-    returnItemLog(id: $returnItemLogId)
-  }
+  mutation ReturnItemLog($returnItemLogInput: ReturnItemLogInput!) {
+  returnItemLog(returnItemLogInput: $returnItemLogInput)
+}
 `;

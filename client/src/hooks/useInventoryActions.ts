@@ -74,12 +74,17 @@ export const useInventoryActions = (eventId: string) => {
     }
   };
 
-  const handleMarkReturned = async (logId: string) => {
+  const handleMarkReturned = async (logId: string, returnedBy: string) => {
     setReturningLogId(logId);
 
     try {
       await returnItemLog({
-        variables: { returnItemLogId: logId },
+        variables: {
+          returnItemLogInput: {
+            id: logId,
+            returnedBy,
+          },
+        },
       });
 
       toast.success("Item marked as returned!");

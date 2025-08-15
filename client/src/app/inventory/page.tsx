@@ -30,7 +30,7 @@ import { toast } from "sonner";
 
 export default function InventoryPage() {
   const [isIssueDialogOpen, setIsIssueDialogOpen] = useState(false);
-  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [activeTab, setActiveTab] = useState<string>("all"); // Add this state
 
   const {
     eventId,
@@ -52,9 +52,9 @@ export default function InventoryPage() {
 
   const { pendingLogs, returnedLogs, overdueLogs } =
     categorizeItemLogs(itemLogs);
-  const filteredLogs = filterLogs(itemLogs, filterStatus);
-
-  console.log("Filtered logs:", filteredLogs);
+  
+  // Update filter logic to use activeTab
+  const filteredLogs = filterLogs(itemLogs, activeTab);
 
   // Helper functions with bound data
   const getItemNameBound = (itemId: string) => getItemName(itemId, items);
@@ -75,15 +75,11 @@ export default function InventoryPage() {
       });
 
       const url = window.URL.createObjectURL(blob);
-
       const link = document.createElement("a");
       link.href = url;
-
       link.setAttribute("download", "exported_itemLogs.xlsx");
-
       document.body.appendChild(link);
       link.click();
-
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
@@ -93,6 +89,46 @@ export default function InventoryPage() {
       console.error("Error exporting items:", error);
       toast.error("Failed to export items. Please try again later.");
     }
+  };
+
+  // Component to render logs based on filter
+  const LogsContent = ({ logs }: { logs: typeof itemLogs }) => {
+    if (logs.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+          <Package2 className="h-10 w-10 text-muted-foreground" />
+          <h3 className="mt-4 text-lg font-semibold">No logs found</h3>
+          <p className="mb-4 mt-2 text-sm text-muted-foreground">
+            {activeTab === "all" 
+              ? "Start by issuing your first item to create a log entry."
+              : `No ${activeTab} logs found.`}
+          </p>
+          {activeTab === "all" && (
+            <Button onClick={() => setIsIssueDialogOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Issue Your First Item
+            </Button>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid gap-4">
+        {logs.map((log) => (
+          <ItemLogCard
+            key={log.id}
+            log={log}
+            members={members}
+            getItemName={getItemNameBound}
+            getMemberName={getMemberNameBound}
+            getDepartmentName={getDepartmentNameBound}
+            onMarkReturned={handleMarkReturned}
+            returningLogId={returningLogId}
+          />
+        ))}
+      </div>
+    );
   };
 
   if (isLoading) {
@@ -154,30 +190,13 @@ export default function InventoryPage() {
           />
         </div>
 
-        <Tabs defaultValue="all" className="space-y-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <div className="flex items-center justify-between">
             <TabsList>
-              <TabsTrigger value="all" onClick={() => setFilterStatus("all")}>
-                All Logs
-              </TabsTrigger>
-              <TabsTrigger
-                value="pending"
-                onClick={() => setFilterStatus("pending")}
-              >
-                Pending
-              </TabsTrigger>
-              <TabsTrigger
-                value="returned"
-                onClick={() => setFilterStatus("returned")}
-              >
-                Returned
-              </TabsTrigger>
-              <TabsTrigger
-                value="overdue"
-                onClick={() => setFilterStatus("overdue")}
-              >
-                Overdue
-              </TabsTrigger>
+              <TabsTrigger value="all">All Logs</TabsTrigger>
+              <TabsTrigger value="pending">Pending</TabsTrigger>
+              <TabsTrigger value="returned">Returned</TabsTrigger>
+              <TabsTrigger value="overdue">Overdue</TabsTrigger>
             </TabsList>
             <div className="flex items-center gap-4">
               <Button
@@ -199,36 +218,20 @@ export default function InventoryPage() {
           </div>
 
           <TabsContent value="all" className="space-y-4">
-            {filteredLogs.length === 0 ? (
-              <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-                <Package2 className="h-10 w-10 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-semibold">No logs found</h3>
-                <p className="mb-4 mt-2 text-sm text-muted-foreground">
-                  Start by issuing your first item to create a log entry.
-                </p>
-                <Button onClick={() => setIsIssueDialogOpen(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Issue Your First Item
-                </Button>
-              </div>
-            ) : (
-              <div className="grid gap-4">
-                {filteredLogs.map((log) => (
-                  <ItemLogCard
-                    key={log.id}
-                    log={log}
-                    getItemName={getItemNameBound}
-                    getMemberName={getMemberNameBound}
-                    getDepartmentName={getDepartmentNameBound}
-                    onMarkReturned={handleMarkReturned}
-                    returningLogId={returningLogId}
-                  />
-                ))}
-              </div>
-            )}
+            <LogsContent logs={filteredLogs} />
           </TabsContent>
 
-          {/* Similar TabsContent for pending, returned, overdue... */}
+          <TabsContent value="pending" className="space-y-4">
+            <LogsContent logs={pendingLogs} />
+          </TabsContent>
+
+          <TabsContent value="returned" className="space-y-4">
+            <LogsContent logs={returnedLogs} />
+          </TabsContent>
+
+          <TabsContent value="overdue" className="space-y-4">
+            <LogsContent logs={overdueLogs} />
+          </TabsContent>
         </Tabs>
 
         <IssueItemDialog

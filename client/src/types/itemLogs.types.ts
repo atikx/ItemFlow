@@ -29,6 +29,7 @@ export interface ItemLog {
   quantityIssued: number;
   expectedReturnDate: string | null;
   returnedAt: string | null;
+  returnedBy: string | null;
   organisationId: string;
   departmentId: string;
   createdAt: string;
